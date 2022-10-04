@@ -4,18 +4,16 @@ enum Msg {
     AddOne,
 }
 
-struct Model {
+struct RootModel {
     value: i64,
 }
 
-impl Component for Model {
+impl Component for RootModel {
     type Message = Msg;
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        Self {
-            value: 0,
-        }
+        Self { value: 0 }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
@@ -35,6 +33,9 @@ impl Component for Model {
         html! {
             <div>
                 <button onclick={link.callback(|_| Msg::AddOne)}>{ "You already know what it is." }</button>
+                <a>{"Home"}</a>
+                <a>{"Music"}</a>
+                <a>{"Resume"}</a>
                 <p>{ self.value }</p>
             </div>
         }
@@ -42,5 +43,5 @@ impl Component for Model {
 }
 
 fn main() {
-    yew::start_app::<Model>();
+    yew::start_app::<RootModel>();
 }
