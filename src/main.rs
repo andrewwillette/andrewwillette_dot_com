@@ -41,7 +41,13 @@ impl Component for RootModel {
         }
     }
 }
+#[function_component(App)]
+fn app() -> Html {
+    html! {
+        <h1>{ "Hello World" }</h1>
+    }
+}
 
 fn main() {
-    yew::start_app::<RootModel>();
+    yew::Renderer::<App>::new().render();
 }
