@@ -1,53 +1,77 @@
 use yew::prelude::*;
-
-enum Msg {
-    AddOne,
-}
-
-struct RootModel {
-    value: i64,
-}
-
-impl Component for RootModel {
-    type Message = Msg;
-    type Properties = ();
-
-    fn create(_ctx: &Context<Self>) -> Self {
-        Self { value: 0 }
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            Msg::AddOne => {
-                self.value += 1;
-                // the value has changed so we need to
-                // re-render for it to appear on the page
-                true
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        // This gives us a component's "`Scope`" which allows us to send messages, etc to the component.
-        let link = ctx.link();
-        html! {
-            <div>
-                <button onclick={link.callback(|_| Msg::AddOne)}>{ "You already know what it is." }</button>
-                <a>{"Home"}</a>
-                <a>{"Music"}</a>
-                <a>{"Resume"}</a>
-                <p>{ self.value }</p>
-            </div>
-        }
-    }
-}
-#[function_component(App)]
-fn app() -> Html {
-    html! {
-        <h1>{ "Hello World" }</h1>
-    }
-}
+use yew::{Callback, Properties};
 
 fn main() {
     yew::Renderer::<App>::new().render();
+}
+
+#[function_component(App)]
+fn app() -> Html {
+    html! {
+        <div>
+        <h1><Banner selected={false}/></h1>
+        </div>
+    }
+}
+
+#[function_component(UseState)]
+fn Banner(props: &Props) -> Html {
+    let home_click_handler: Callback<_> = Callback::from(move |id: String| {
+        web_sys::console::log_1(&id.into());
+        // _props.last_clicked = id;
+    });
+    let blog_click_handler: Callback<_> = Callback::from(move |id: String| {
+        web_sys::console::log_1(&id.into());
+    });
+    let music_click_handler: Callback<_> = Callback::from(move |id: String| {
+        web_sys::console::log_1(&id.into());
+    });
+    let resume_click_handler: Callback<_> = Callback::from(move |id: String| {
+        web_sys::console::log_1(&id.into());
+    });
+    let counter = use_state(|| 0);
+    let onclick: Callback<_> = {
+        let counter = counter.clone();
+        Callback::from(move |id: String| counter.set(*counter + 1))
+    };
+
+    html! {
+    <section>
+        <ul>
+            // <li onclick={move|_|{home_click_handler.emit("home".to_string());}}>{"Home"}</li>
+            <li onclick={move|_|{home_click_handler.emit("home".to_string());}}>{"Home"}</li>
+            <li onclick={move|_|{blog_click_handler.emit("blog".to_string());}}>{"Blog"}</li>
+            <li onclick={move|_|{music_click_handler.emit("music".to_string());}}>{"Music"}</li>
+            <li onclick={move|_|{resume_click_handler.emit("resume".to_string());}}>{"Resume"}</li>
+            <div>{props.selected}</div>
+            <div>{props.last_clicked}</div>
+        </ul>
+    </section>
+        }
+}
+
+#[derive(Clone, Copy, PartialEq)]
+pub enum Page {
+    Home,
+    Blog,
+    Music,
+    Resume,
+}
+
+impl ToString for Page {
+    fn to_string(&self) -> String {
+        match self {
+            Page::Home => "Home".to_string(),
+            Page::Blog => "Blog".to_string(),
+            Page::Music => "Music".to_string(),
+            Page::Resume => "Resume".to_string(),
+        }
+    }
+}
+
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    pub selected: bool,
+    #[prop_or(Page::Home)]
+    pub last_clicked: Page,
 }
