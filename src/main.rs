@@ -1,20 +1,24 @@
 use yew::prelude::*;
+use yew::{function_component, html, Html};
 use yew::{Callback, Properties};
 
 fn main() {
     yew::Renderer::<App>::new().render();
 }
 
-#[function_component(App)]
-fn app() -> Html {
+#[function_component]
+fn App() -> Html {
     html! {
         <div>
-        <h1><Banner selected={false}/></h1>
+        <h1>
+        <Banner selected={false}/>
+        </h1>
+            {"garbage"}
         </div>
     }
 }
 
-#[function_component(UseState)]
+#[function_component]
 fn Banner(props: &Props) -> Html {
     let home_click_handler: Callback<_> = Callback::from(move |id: String| {
         web_sys::console::log_1(&id.into());
