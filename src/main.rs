@@ -11,7 +11,7 @@ fn App() -> Html {
     html! {
         <div>
         <h1>
-        <Banner selected={false}/>
+        // <Banner selected={false}/>
         </h1>
             {"garbage"}
         </div>
@@ -32,6 +32,7 @@ fn Banner(props: &Props) -> Html {
     });
     let resume_click_handler: Callback<_> = Callback::from(move |id: String| {
         web_sys::console::log_1(&id.into());
+        // props.selected =
     });
     let counter = use_state(|| 0);
     let onclick: Callback<_> = {
