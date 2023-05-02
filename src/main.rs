@@ -11,7 +11,7 @@ fn App() -> Html {
     html! {
         <div>
         <h1>
-        // <Banner selected={false}/>
+        <Banner selected={false}/>
         </h1>
             {"garbage"}
         </div>
@@ -19,10 +19,11 @@ fn App() -> Html {
 }
 
 #[function_component]
-fn Banner(props: &Props) -> Html {
-    let home_click_handler: Callback<_> = Callback::from(move |id: String| {
+fn Banner(mut props: &Props) -> Html {
+    let home_click_handler: Callback<_, &str> = Callback::from(move |id: String| {
         web_sys::console::log_1(&id.into());
-        // _props.last_clicked = id;
+        return "hi";
+        // props.last_clicked = Page::Home;
     });
     let blog_click_handler: Callback<_> = Callback::from(move |id: String| {
         web_sys::console::log_1(&id.into());
@@ -35,9 +36,9 @@ fn Banner(props: &Props) -> Html {
         // props.selected =
     });
     let counter = use_state(|| 0);
-    let onclick: Callback<_> = {
+    let _onclick: Callback<_> = {
         let counter = counter.clone();
-        Callback::from(move |id: String| counter.set(*counter + 1))
+        Callback::from(move |_id: String| counter.set(*counter + 1))
     };
 
     html! {
