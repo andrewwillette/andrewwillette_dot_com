@@ -80,10 +80,11 @@ fn banner(props: &Props) -> Html {
     html! {
     <section>
         <ul>
-            <li onclick={move|_|{props.home_click_callback.emit("home".to_string());}}>{"Home"}</li>
-            <li onclick={move|_|{props.home_click_callback.emit("blog".to_string());}}>{"Blog"}</li>
-            <li onclick={move|_|{props.music_click_callback.emit("music".to_string());}}>{"Music"}</li>
-            <li onclick={move|_|{props.resume_click_callback.emit("resume".to_string());}}>{"Resume"}</li>
+            // <li onclick={move|_|{props.home_click_callback.emit("home".to_string());}}>{"Home"}</li>
+            // <li onclick={move|_|{props.home_click_callback.emit("blog".to_string());}}>{"Blog"}</li>
+            // <li onclick={move|_|{props.music_click_callback.emit("music".to_string());}}>{"Music"}</li>
+            // <li onclick={move|_|{props.resume_click_callback.emit("resume".to_string());}}>{"Resume"}</li>
+
             // <div>{props.selected}</div>
             // <div>{props.last_clicked}</div>
             // <div>{&*current_page.to_string()}</div>
@@ -143,7 +144,7 @@ impl Props {
 }
 
 #[function_component(Music)]
-fn music_page(mut props: &Props) -> Html {
+fn music_page(props: &Props) -> Html {
     html! {
     <section>
         <ul>
@@ -155,7 +156,7 @@ fn music_page(mut props: &Props) -> Html {
 }
 
 #[function_component(CVPage)]
-fn cv_page(mut props: &Props) -> Html {
+fn cv_page(props: &Props) -> Html {
     html! {
     <section>
         <ul>
