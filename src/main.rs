@@ -1,8 +1,10 @@
 use yew::prelude::*;
 use yew::{function_component, html, Html};
 use yew::{Callback, Properties};
+mod router;
 
 fn main() {
+    // let example = RootRoutes::Home;
     yew::Renderer::<App>::new().render();
 }
 
@@ -38,7 +40,6 @@ fn App() -> Html {
         <h1>
         <Banner selected={false} {home_click_callback} {blog_click_callback} {resume_click_callback} {music_click_callback}/>
         </h1>
-            {"garbage"}
             <div>{&*current_page.to_string()}</div>
         </div>
     }
@@ -80,6 +81,7 @@ fn banner(props: &Props) -> Html {
     html! {
     <section>
         <ul>
+            <li>{props.selected.to_string()}</li>
             // <li onclick={move|_|{props.home_click_callback.emit("home".to_string());}}>{"Home"}</li>
             // <li onclick={move|_|{props.home_click_callback.emit("blog".to_string());}}>{"Blog"}</li>
             // <li onclick={move|_|{props.music_click_callback.emit("music".to_string());}}>{"Music"}</li>
