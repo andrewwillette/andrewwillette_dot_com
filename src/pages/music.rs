@@ -1,11 +1,21 @@
-#[function_component(Music)]
-fn music_page(props: &Props) -> Html {
-    html! {
-    <section>
-        <ul>
-            // <li onclick={move|_|{home_click_handler.emit("home".to_string());}}>{"Home"}</li>
-            <div>{"listen to music"}</div>
-        </ul>
-    </section>
-        }
+use yew::prelude::*;
+pub struct Music;
+
+impl Component for Music {
+    type Message = ();
+    type Properties = ();
+
+    fn create(_ctx: &Context<Self>) -> Self {
+        Self
+    }
+
+    fn view(&self, _ctx: &Context<Self>) -> Html {
+        html! {
+        <section>
+            <ul>
+                <div>{"listen to music"}</div>
+            </ul>
+        </section>
+            }
+    }
 }

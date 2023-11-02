@@ -1,158 +1,106 @@
+use pages::home::Home;
+use pages::music::Music;
+use pages::resume::Resume;
+use yew::html::Scope;
 use yew::prelude::*;
-use yew::{function_component, html, Html};
-use yew::{Callback, Properties};
-mod router;
+use yew::Html;
+use yew_router::prelude::*;
+
+mod pages;
 
 fn main() {
-    // let example = RootRoutes::Home;
     yew::Renderer::<App>::new().render();
 }
 
-#[function_component]
-fn App() -> Html {
-    let current_page = use_state(String::new);
-    let home_click_callback: Callback<_> = {
-        let current_page = current_page.clone();
-        Callback::from(move |_| {
-            current_page.set("Home".to_string());
-        })
-    };
-    let blog_click_callback: Callback<_> = {
-        let current_page = current_page.clone();
-        Callback::from(move |_: String| {
-            current_page.set("Blog".to_string());
-        })
-    };
-    let music_click_callback: Callback<_> = {
-        let current_page = current_page.clone();
-        Callback::from(move |_: String| {
-            current_page.set("Music".to_string());
-        })
-    };
-    let resume_click_callback: Callback<_> = {
-        let current_page = current_page.clone();
-        Callback::from(move |_: String| {
-            current_page.set("Resume".to_string());
-        })
-    };
-    html! {
-        <div>
-        <h1>
-        <Banner selected={false} {home_click_callback} {blog_click_callback} {resume_click_callback} {music_click_callback}/>
-        </h1>
-            <div>{&*current_page.to_string()}</div>
-        </div>
-    }
-}
-
-#[function_component(Banner)]
-fn banner(props: &Props) -> Html {
-    // let current_page = use_state(String::new);
-    // let home_click_handler: Callback<_> = {
-    //     let current_page = current_page.clone();
-    //     Callback::from(move |_| {
-    //         current_page.set("Home".to_string());
-    //     })
-    // };
-    // let blog_click_handler: Callback<_> = {
-    //     let current_page = current_page.clone();
-    //     Callback::from(move |_| {
-    //         current_page.set("Blog".to_string());
-    //     })
-    // };
-    // let music_click_handler: Callback<_> = {
-    //     let current_page = current_page.clone();
-    //     Callback::from(move |_| {
-    //         current_page.set("Music".to_string());
-    //     })
-    // };
-    // let resume_click_handler: Callback<_> = {
-    //     let current_page = current_page.clone();
-    //     Callback::from(move |_| {
-    //         current_page.set("Resume".to_string());
-    //     })
-    // };
-    // let counter = use_state(|| 0);
-    // let _onclick: Callback<_> = {
-    //     let counter = counter.clone();
-    //     Callback::from(move |_id: String| counter.set(*counter + 1))
-    // };
-
-    html! {
-    <section>
-        <ul>
-            <li>{props.selected.to_string()}</li>
-            // <li onclick={move|_|{props.home_click_callback.emit("home".to_string());}}>{"Home"}</li>
-            // <li onclick={move|_|{props.home_click_callback.emit("blog".to_string());}}>{"Blog"}</li>
-            // <li onclick={move|_|{props.music_click_callback.emit("music".to_string());}}>{"Music"}</li>
-            // <li onclick={move|_|{props.resume_click_callback.emit("resume".to_string());}}>{"Resume"}</li>
-
-            // <div>{props.selected}</div>
-            // <div>{props.last_clicked}</div>
-            // <div>{&*current_page.to_string()}</div>
-        </ul>
-    </section>
-        }
-}
-
-#[derive(Clone, Copy, PartialEq)]
-pub enum Page {
+#[derive(Routable, PartialEq, Eq, Clone, Debug)]
+pub enum Route {
+    #[at("/home")]
     Home,
-    Blog,
-    Music,
+    #[at("/resume")]
     Resume,
+    #[at("/music")]
+    Music,
 }
 
-impl ToString for Page {
-    fn to_string(&self) -> String {
-        match self {
-            Page::Home => "Home".to_string(),
-            Page::Blog => "Blog".to_string(),
-            Page::Music => "Music".to_string(),
-            Page::Resume => "Resume".to_string(),
+fn switch(routes: Route) -> Html {
+    match routes {
+        Route::Home => {
+            html! { <Home /> }
+        }
+        Route::Resume => {
+            html! { <Resume /> }
+        }
+        Route::Music => {
+            html! { <Music /> }
         }
     }
 }
 
-#[derive(Properties, PartialEq)]
-pub struct Props {
-    pub selected: bool,
-    #[prop_or(Page::Home)]
-    pub last_clicked: Page,
-    pub home_click_callback: Callback<String>,
-    pub resume_click_callback: Callback<String>,
-    pub blog_click_callback: Callback<String>,
-    pub music_click_callback: Callback<String>,
+pub enum Msg {
+    ToggleNavbar,
 }
 
-impl Props {
-    pub fn new(
-        selected: bool,
-        last_clicked: Page,
-        home_click_callback: Callback<String>,
-        resume_click_callback: Callback<String>,
-        blog_click_callback: Callback<String>,
-        music_click_callback: Callback<String>,
-    ) -> Self {
+pub struct App {
+    navbar_active: bool,
+}
+impl Component for App {
+    type Message = Msg;
+    type Properties = ();
+
+    fn create(_ctx: &Context<Self>) -> Self {
         Self {
-            selected,
-            last_clicked,
-            home_click_callback,
-            resume_click_callback,
-            blog_click_callback,
-            music_click_callback,
+            navbar_active: false,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            Msg::ToggleNavbar => {
+                self.navbar_active = !self.navbar_active;
+                true
+            }
+        }
+    }
+
+    fn view(&self, ctx: &Context<Self>) -> Html {
+        html! {
+            <BrowserRouter>
+                { self.view_nav(ctx.link()) }
+
+                <main>
+                    <Switch<Route> render={switch} />
+                </main>
+                <footer class="footer">
+                    <div class="">
+                    </div>
+                </footer>
+            </BrowserRouter>
         }
     }
 }
+impl App {
+    fn view_nav(&self, _link: &Scope<Self>) -> Html {
+        let Self { navbar_active, .. } = *self;
 
-#[function_component(CVPage)]
-fn cv_page(props: &Props) -> Html {
-    html! {
-    <section>
-        <ul>
-            // <li onclick={move|_|{home_click_handler.emit("home".to_string());}}>{"Home"}</li>
-            <div>{"listen to music"}</div>
-        </ul>
-    </section>
+        let active_class = if !navbar_active { "is-active" } else { "" };
+
+        html! {
+            <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+                <div class={classes!("navbar-menu", active_class)}>
+                    <div class="navbar-start">
+                        <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
+                            { "Home" }
+                        </Link<Route>>
+                        <Link<Route> classes={classes!("navbar-item")} to={Route::Resume}>
+                            { "Resume" }
+                        </Link<Route>>
+                        <Link<Route> classes={classes!("navbar-item")} to={Route::Music}>
+                            { "Music" }
+                        </Link<Route>>
+
+                    </div>
+                </div>
+            </nav>
         }
+    }
 }
