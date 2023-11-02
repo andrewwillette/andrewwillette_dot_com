@@ -14,7 +14,7 @@ fn main() {
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum Route {
-    #[at("/home")]
+    #[at("/")]
     Home,
     #[at("/resume")]
     Resume,
@@ -43,6 +43,7 @@ pub enum Msg {
 pub struct App {
     navbar_active: bool,
 }
+
 impl Component for App {
     type Message = Msg;
     type Properties = ();
