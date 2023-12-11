@@ -3,16 +3,26 @@
     text-align: center;
 }
 
-/* add margins between the navbar-menu items */
 .navbar-menu a {
     margin: 1rem;
+}
+
+.music-page ul iframe {
+    width: 80%;
+    height: 5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: .5rem;
 }
 
 .home-container img {
     text-align: center;
     height: auto;
     width: 20%;
-
+    margin-top: 1.5rem;
+    margin-bottom: .5rem;
 }
 
 .center {

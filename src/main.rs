@@ -1,6 +1,5 @@
 use pages::home::Home;
 use pages::music::Music;
-use pages::resume::Resume;
 use yew::html::Scope;
 use yew::prelude::*;
 use yew::Html;
@@ -16,8 +15,6 @@ fn main() {
 pub enum Route {
     #[at("/")]
     Home,
-    #[at("/resume")]
-    Resume,
     #[at("/music")]
     Music,
 }
@@ -26,9 +23,6 @@ fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => {
             html! { <Home /> }
-        }
-        Route::Resume => {
-            html! { <Resume /> }
         }
         Route::Music => {
             html! { <Music /> }
@@ -92,13 +86,10 @@ impl App {
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
                             { "Home" }
                         </Link<Route>>
-                        <Link<Route> classes={classes!("navbar-item")} to={Route::Resume}>
-                            { "Resume" }
-                        </Link<Route>>
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Music}>
                             { "Music" }
                         </Link<Route>>
-
+                        <a href="https://andrewwillette.s3.us-east-2.amazonaws.com/newdir/resume.pdf">{"Resume"}</a>
                     </div>
                 </div>
             </nav>
