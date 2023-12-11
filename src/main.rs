@@ -86,7 +86,7 @@ impl App {
         let active_class = if !navbar_active { "is-active" } else { "" };
 
         html! {
-            <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+            <nav class="navbar is-primary container" role="navigation" aria-label="main navigation">
                 <div class={classes!("navbar-menu", active_class)}>
                     <div class="navbar-start">
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>

@@ -1,3 +1,13 @@
+.container {
+    /* center all text inside the class */
+    text-align: center;
+}
+
+/* add margins between the navbar-menu items */
+.navbar-menu a {
+    margin: 1rem;
+}
+
 a {
 	font-size: 23px;
 }
